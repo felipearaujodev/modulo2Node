@@ -23,10 +23,13 @@ class App {
       autoescape: true
     })
 
+    this.express.use(express.static(path.resolve(__dirname, 'public')))
     this.express.set('view engine', 'njk')
   }
 
-  routes () {}
+  routes () {
+    this.express.use(require('./routes'))
+  }
 }
 
 module.exports = new App().express // exporta uma instancia do app
