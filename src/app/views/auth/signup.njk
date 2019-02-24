@@ -1,5 +1,34 @@
 {% extends "_layouts/auth.njk" %}
 
 {% block body %}
-  <h1>Hello Word</h1>
+  <form action="/signup" method="POST" >
+    <label for="avatar" >
+      <img src="/images/avatar.svg" height ="24"/>
+    </label>
+
+    <input id="avatar" name ="avatar" type="file" />
+
+    <input type="text" name="name" placeholder="Nome completo" />
+    <input type="email" name="email" placeholder="Seu e-mail" />
+    <input type="password" name="password" placeholder="Senha secreta" />
+
+    <label for="provider">
+      <input type="checkbox" id="provider" name="provider" value="1"/>
+      Sou cabelereiro
+    </label>
+
+    <button submit="submit">Criar conta</button>
+
+    <a href="/">Ja possuo conta</a>
+  </form>
+
+  <script>
+    var avatarinput = document.getElementById('avatar')
+    var img = document.querySelector('label[for=avatar] img')
+
+    avatarinput.onchange =function(e) {
+      img.classList.add('preview')
+      img.src = URL.createObjectURL(e.target.files[0])
+    }
+  </script>
 {% endblock %}

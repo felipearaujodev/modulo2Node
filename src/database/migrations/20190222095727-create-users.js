@@ -29,7 +29,7 @@ module.exports = {
       provider: {
         allowNull: false,
         defaultValue: false,
-        type: Sequelize.BOLLEAN
+        type: Sequelize.BOOLEAN
       },
       created_at: {
         allowNull: false,
