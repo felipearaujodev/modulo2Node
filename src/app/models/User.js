@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   )
+  // função usada para comparar a senha digitada no formulário de login signin é igual a senha do banco de dados
+  User.prototype.checkPassword = function (password) {
+    return bcrypt.compare(password, this.password_hash)
+  }
 
   return User
 }
