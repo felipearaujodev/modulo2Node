@@ -4,15 +4,25 @@ const upload = require('multer')(multerConfig)
 
 const routes = express.Router()
 
+const authMiddleware = require('./app/middlewares/auth')
+const grestMiddleware = require('./app/middlewares/guest')
+
 const UserController = require('./app/controllers/UserController')
 const SessionController = require('./app/controllers/SessionController')
 
-routes.get('/', SessionController.create)
+routes.use('/app', authMiddleware)
+/* todas as rotas dentro de /app estão protegidas pelo middleware, ou seja,
+o usuário deve estar logado para acessar qualquer aplicação dentro de app */
+
+routes.get('/', grestMiddleware, SessionController.create)
 routes.post('/signin', SessionController.store)
 
-routes.get('/signup', UserController.create)
+routes.get('/signup', grestMiddleware, UserController.create)
 routes.post('/signup', upload.single('avatar'), UserController.store)
 
-routes.get('/app/dashboard', (req, res) => res.render('dashboard'))
+routes.get('/app/dashboard', (req, res) => {
+  console.log(req.session.user)
+  return res.render('dashboard')
+})
 
 module.exports = routes

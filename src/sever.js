@@ -1,6 +1,12 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
 const path = require('path')
+const session = require('express-session')
+const FileStore = require('session-file-store')(session)
+/* @é mais recomendado utilizar express-session-redis para sessoes
+    @neste caso onde usamos servidor offline na própria máquina vamos usar
+  file-store para criar um json na pasta tmp/session com os dados de usuário
+*/
 
 class App {
   constructor () {
@@ -14,6 +20,17 @@ class App {
 
   midlewares () {
     this.express.use(express.urlencoded({ extended: false }))
+    this.express.use(
+      session({
+        name: 'root',
+        secret: 'MyAppSecret',
+        resave: true,
+        store: new FileStore({
+          path: path.resolve(__dirname, '..', 'tmp', 'sessions')
+        }),
+        saveUninitialized: true
+      })
+    )
   }
 
   views () {
