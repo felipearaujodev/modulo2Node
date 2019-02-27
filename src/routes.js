@@ -10,6 +10,13 @@ const grestMiddleware = require('./app/middlewares/guest')
 const UserController = require('./app/controllers/UserController')
 const SessionController = require('./app/controllers/SessionController')
 
+routes.use((req, res, next) => {
+  res.locals.flashSucces = req.flash('success')
+  res.locals.flashError = req.flash('error')
+
+  return next()
+})
+
 routes.use('/app', authMiddleware)
 /* todas as rotas dentro de /app estão protegidas pelo middleware, ou seja,
 o usuário deve estar logado para acessar qualquer aplicação dentro de app */
@@ -19,6 +26,8 @@ routes.post('/signin', SessionController.store)
 
 routes.get('/signup', grestMiddleware, UserController.create)
 routes.post('/signup', upload.single('avatar'), UserController.store)
+
+routes.get('/app/logout', SessionController.destroy)
 
 routes.get('/app/dashboard', (req, res) => {
   console.log(req.session.user)
