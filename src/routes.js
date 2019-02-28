@@ -9,6 +9,8 @@ const grestMiddleware = require('./app/middlewares/guest')
 
 const UserController = require('./app/controllers/UserController')
 const SessionController = require('./app/controllers/SessionController')
+const DashboardController = require('./app/controllers/DashboardController')
+const FileController = require('./app/controllers/FileController')
 
 routes.use((req, res, next) => {
   res.locals.flashSucces = req.flash('success')
@@ -21,6 +23,8 @@ routes.use('/app', authMiddleware)
 /* todas as rotas dentro de /app estão protegidas pelo middleware, ou seja,
 o usuário deve estar logado para acessar qualquer aplicação dentro de app */
 
+routes.get('/files/:file', FileController.show)
+
 routes.get('/', grestMiddleware, SessionController.create)
 routes.post('/signin', SessionController.store)
 
@@ -29,9 +33,6 @@ routes.post('/signup', upload.single('avatar'), UserController.store)
 
 routes.get('/app/logout', SessionController.destroy)
 
-routes.get('/app/dashboard', (req, res) => {
-  console.log(req.session.user)
-  return res.render('dashboard')
-})
+routes.get('/app/dashboard', DashboardController.index)
 
 module.exports = routes
