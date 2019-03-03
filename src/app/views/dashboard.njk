@@ -18,7 +18,9 @@
     {% endfor %}
   </ul>
 
+  {% if (user.provider === true) %}
     <a href="/app/editor">Meus agendamentos</a>
+  {% endif %}
 
   <a href="/app/logout" class="logout">Sair</a>
 </div>

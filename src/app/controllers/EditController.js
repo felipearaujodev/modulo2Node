@@ -1,6 +1,6 @@
-const moment = require('moment')
-const { Op } = require('sequelize')
 const { Appointment, User } = require('../models')
+const { Op } = require('sequelize')
+const moment = require('moment')
 
 class EditController {
   async index (req, res) {
